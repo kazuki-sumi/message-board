@@ -1,0 +1,10 @@
+<h1>id: <%= @messag.id %>のメッセージ詳細ページ</h1>
+
+<P><%= @message.content %></P>
+
+<%= link_to '一覧に戻る', message_path %>
+
+#method: :delete DELETEメソッドを送信することを明示
+<%= link_to 'このメッセージを編集する', edit_message_path(@message) %>
+
+<%= link_to 'このメッセージを削除する', @message, method: :delete, date: {confirm: '本当に削除してよろしいですか？'} %>
