@@ -1,62 +1,63 @@
 class MessagesController < ApplicationController
-    before_action :set_message, only: [:show, :edit, :update, :destroy]
-    def index
-        @messages = Message.all
+  #メッセージモデルの一覧を.allで取得
+  def index
+    @messages = Message.all 
+  end
+  
+  #ルーティングから来たリクエスト「:id」の値がparams[:id]にはいる
+  #findメソッドでidを指定し、Messageレコードから取得する
+  def show
+    @message = Message.find(params[:id])
+  end
+  
+  def new
+    @message = Message.new
+  end
+  
+  def create
+     @message = Message.new(message_params)
+
+    if @message.save
+      flash[:success] = 'Message が正常に投稿されました'
+      redirect_to @message
+    else
+      flash.now[:danger] = 'Message が投稿されませんでした'
+      render :new
     end
-    
-    def show
-        
+  end
+  
+  def edit
+    @message = Message.find(params[:id])
+  end
+  
+  def delete
+  end
+  
+  def update 
+    @message = Message.find(params[:id])
+
+    if @message.update(message_params)
+      flash[:success] = 'Message は正常に更新されました'
+      redirect_to @message
+    else
+      flash.now[:danger] = 'Message は更新されませんでした'
+      render :edit
     end
-    
-    def new
-        @message = Message.new
-    end
-    
-    def create
-        @message = Message.new(message_params)
-        
-        if @message.save
-            flash[:success] = 'Messageが正常に投稿されました'
-            redirect_to @message
-        else
-            flash.now[:danger] = 'Messageが投稿されませんでした'
-            render :new
-        end
-    end
-    
-    def edit
-       
-    end
-    
-    def update
-        
-        if @message.update(message_params)
-            flash[:success] = 'Messageは正常に更新されました'
-            redirect_to @message
-        else
-            flash.now[:danger] = 'Messageは更新されませんでした'
-            render :edit
-        end
-        
-    end
-    
-    def destroy
-        
-        @message.destroy
-        
-        flash[:succces] = 'Messageは正常に削除されました'
-        redirect_to messages_url
-    end
-    
-    
-    private
-    
-    def set_message
-        @message = Message.find(params[:id])
-    end
-    
-    def message_params
-        params.require(:message).permit(:content)
-    end
+  end
+
+  
+  def destroy
+     @message = Message.find(params[:id])
+    @message.destroy
+
+    flash[:success] = 'Message は正常に削除されました'
+    redirect_to messages_url
+  end
+  
+  private
+  
+  def message_params
+    params.require(:message).permit(:content)
+  end
     
 end

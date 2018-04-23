@@ -1,10 +1,9 @@
-<h1>id: <%= @message.id %>のメッセージ詳細ページ</h1>
+<!--コントローラから変数@messageを使ってMessageモデルからもらったidの値を表示-->
 
-<P><%= @message.content %></P>
+<h1>id: <%= @message.id %> のメッセージ詳細ページ</h1>
 
-<%= link_to '一覧に戻る', messages_path %>
+<p><%= @message.content %></p>
 
-
+<%= link_to '一覧に戻る', message_path %>
 <%= link_to 'このメッセージを編集する', edit_message_path(@message) %>
-
-<%= link_to 'このメッセージを削除する', @message, method: :delete, date: {confirm: '本当に削除してよろしいですか？'} %>
+<%= link_to 'このメッセージを削除する', @message, method: :delete, data: { confirm: '本当に削除してよろしいですか？' } %>
