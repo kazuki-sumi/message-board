@@ -1,5 +1,51 @@
-<h1>メッセージ新規作成ページ</h1>
+<div class="row">
+  <div class="col-xs-6">
+    
+<%= form_for(message) do |f| %>
 
-<%= render 'form', message: @message %>
+      
+<% if message.errors.any? %>
 
-<%= link_to '一覧に戻る', messages_path %>
+        <div id="error_explanation">
+          <ul>
+            
+<% message.errors.full_messages.each do |message| %>
+
+              <li>
+<%= message %>
+</li>
+            
+<% end %>
+
+          </ul>
+        </div>
+      
+<% end %>
+
+
+      <div class="form-group">
+        
+<%= f.label :title, 'タイトル' %>
+
+        
+<%= f.text_field :title, class: 'form-control' %>
+
+      </div>
+
+      <div class="form-group">
+        
+<%= f.label :content, 'メッセージ' %>
+
+        
+<%= f.text_field :content, class: 'form-control' %>
+
+      </div>
+
+      
+<%= f.submit '投稿', class: 'btn btn-primary' %>
+
+    
+<% end %>
+
+  </div>
+</div>
