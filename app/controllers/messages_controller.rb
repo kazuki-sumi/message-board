@@ -2,7 +2,7 @@ class MessagesController < ApplicationController
   before_action :set_message, only: [:show, :edit, :update, :destroy]
   #メッセージモデルの一覧を.allで取得
   def index
-    @messages = Message.all 
+    @messages = Message.all.page(params[:page]).per(10)
   end
   
   #ルーティングから来たリクエスト「:id」の値がparams[:id]にはいる
