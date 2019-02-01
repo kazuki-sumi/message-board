@@ -35,8 +35,9 @@ class MessagesController < ApplicationController
   
   def update 
     if @message.update(message_params)
-      flash[:success] = 'Message は正常に更新されました'
-      redirect_to @message
+      #flash[:success] = 'Message は正常に更新されました'
+      #redirect_to @message
+      redirect_to controller: :messages, action: :index, alert: '正常に更新されました。'
     else
       flash.now[:danger] = 'Message は更新されませんでした'
       render :edit
