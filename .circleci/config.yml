@@ -1,9 +1,36 @@
-version: 2.0
+# この設定ファイルがCircleCI 2.0対応ということを宣言しています
+version: 2
+
+# ジョブ（詳しくは後述）の設定をここ以降に書きます
 jobs:
+  # buildというジョブを設定していきます
   build:
+    working_directory: ~/message-board
+    # ビルドで使うDockerイメージを指定します。前述したようにCircleCIはDockerをネイティブサポートしているので、好きなDockerのイメージを使ってビルドの設定ができます。
     docker:
-      - image: circleci/node:4.8.2
-      
+      - image: circleci/ruby:2.4.1-node
+        environment:
+          RAILS_ENV: test
+      - image: circleci/postgres:9.4.12-alpine
+    # ステップとは実際に実行されるコマンドやビルドのアクションです。それらをsteps配下に書いていくことでビルドの設定をしていきます。
     steps:
       - checkout
-      - run: echo "Hello World!"
+
+      - restore_cache:
+          keys:
+            - v1-rails-demo-{{ checksum "Gemfile.lock" }}
+            - v1-rails-demo
+
+      - run: bundle install --path vendor/bundle
+
+      - save_cache:
+          key: v1-rails-demo-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      - run:
+          command: |
+            bundle exec rake db:create
+            bundle exec rake db:schema:load
+
+      - run: bundle exec rspec
